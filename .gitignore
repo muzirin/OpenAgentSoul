@@ -1,5 +1,5 @@
 # 部署者在本地补充的环境说明（含主机名、命令别名、通道等私有信息），不入库
-souls/*/SOUL.local.md
+zh-cn/souls/**/SOUL.local.md
 *.local.md
 local/
 

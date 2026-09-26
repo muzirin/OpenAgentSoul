@@ -2,40 +2,55 @@
 
 给 AI agent 用的**人格文件（soul）**与配套资料。
 
-- **`souls/`** —— 人格文件：描述一个角色的身份、语域、判断方式与边界，可直接作为系统提示里的身份层加载。目标不是让模型「演出」角色，而是让它带着一套稳定的语气与取舍把活干完。
-- **`zh-cn/`** —— 中文区配套资料：目前是《明日方舟》**干员名录知识库**（SQLite + 查询脚本 + agent skill），让 agent 查库回答事实，而不是凭记忆编。
+- **人格文件** —— 描述一个角色的身份、语域、判断方式与边界，可直接作为系统提示里的身份层加载。目标不是让模型「演出」角色，而是让它带着一套稳定的语气与取舍把活干完。
+- **附加信息** —— 支撑人格的配套资料（知识库、查询脚本、agent skill 等），让人格按事实作答而不是凭记忆编。
 
 ## 目录结构
 
-```
-souls/<name>/
-├── SOUL.md      # 人格正文 —— 框架实际加载的就是这一份
-└── README.md    # 该人格的设计说明：依据、结构意图、如何改造
+人格分两类：**通用**（与作品无关）与**系列**（源自某部作品，通常配有自己的资料库）。
 
-zh-cn/AuxiliaryInformation/Arknights/roster/
-├── operators.json      # 干员数据（源）
-├── operators.db        # 由 JSON 构建的 SQLite 库（可重建）
-├── build_roster_db.py  # 构建脚本
-├── roster_query.py     # 查询工具（仅用标准库）
-├── 干员名录.md          # 人读的名录
-└── skills/arknights-roster/SKILL.md   # agent 侧的用法说明
+```
+zh-cn/
+├── souls/                          # 人格
+│   ├── <name>/                     # 通用人格，每个人格各占一个目录
+│   │   ├── SOUL.md                 # 人格正文 —— 框架实际加载的就是这一份
+│   │   └── README.md               # 设计说明：结构意图、关键设计、如何改造
+│   └── <系列>/                     # 有作品归属的，收在同名系列目录下
+│       └── <name>/
+│           ├── SOUL.md
+│           └── README.md
+└── AuxiliaryInformation/           # 附加信息：配套资料，不放人格
+    └── <系列>/ …
+```
+
+目前：
+
+```
+zh-cn/souls/
+├── Arknights/kaltsit/    凯尔希（系列：《明日方舟》）
+├── catgirl-tsundere/     傲娇猫娘（通用）
+├── catgirl-snark/        毒舌猫娘（通用）
+├── butler/               执事（通用）
+└── mentor/               导师（通用）
+
+zh-cn/AuxiliaryInformation/Arknights/roster/   干员名录知识库
 ```
 
 ## 现有 souls
 
 | soul | 角色 | 定位 | 出处 |
 | --- | --- | --- | --- |
-| [`kaltsit`](souls/kaltsit/SOUL.md) | 凯尔希 · Kal'tsit | 冷静克制的医生：话少、判断硬、把活干完 | 《明日方舟》 |
-| [`catgirl-tsundere`](souls/catgirl-tsundere/SOUL.md) | 傲娇猫娘 | 嘴上不承认、手上没停过——行动永远走在嘴硬前面 | 原创 |
-| [`catgirl-snark`](souls/catgirl-snark/SOUL.md) | 毒舌猫娘 | 每句毒都必须带诊断；只毒事，不毒人 | 原创 |
-| [`butler`](souls/butler/SOUL.md) | 执事 | 得体、精确、**不谄媚**；三段式汇报 | 原创 |
-| [`mentor`](souls/mentor/SOUL.md) | 导师 | 先判断要理解还是要结果；每次留一个动作和验证标准 | 原创 |
+| [`kaltsit`](zh-cn/souls/Arknights/kaltsit/SOUL.md) | 凯尔希 · Kal'tsit | 冷静克制的医生：话少、判断硬、把活干完 | 《明日方舟》 |
+| [`catgirl-tsundere`](zh-cn/souls/catgirl-tsundere/SOUL.md) | 傲娇猫娘 | 嘴上不承认、手上没停过——行动永远走在嘴硬前面 | 原创 |
+| [`catgirl-snark`](zh-cn/souls/catgirl-snark/SOUL.md) | 毒舌猫娘 | 每句毒都必须带诊断；只毒事，不毒人 | 原创 |
+| [`butler`](zh-cn/souls/butler/SOUL.md) | 执事 | 得体、精确、**不谄媚**；三段式汇报 | 原创 |
+| [`mentor`](zh-cn/souls/mentor/SOUL.md) | 导师 | 先判断要理解还是要结果；每次留一个动作和验证标准 | 原创 |
 
 ## 使用
 
 ### 1. 加载人格
 
-1. 取 `souls/<name>/SOUL.md`。
+1. 取对应目录下的 `SOUL.md`。
 2. 放进你的 agent 框架的身份槽——Hermes 系框架即 `~/.hermes/SOUL.md`；其它框架就贴进系统提示的身份段落。
 3. **运行环境相关的内容不要写进 SOUL.md。** 主机名、内网地址、专用命令、工具清单因部署而异，放在你自己的环境说明里（见下一节）。
 4. 加载后先问它几个问题，探一探语气与边界是不是你要的，再决定是否微调。
@@ -54,7 +69,7 @@ python3 roster_query.py --help  # 查询入口
 
 本仓库的 soul **刻意不含任何部署细节**：不出现主机名、私网地址、反向隧道命令、密钥或工具数量。`SKILL.md` 里的路径（如 `/home/<用户>/.hermes/data/roster/`）只是常见部署位置的示例，按你的实际路径调整。
 
-部署者需要补充环境说明时，建议放在 `souls/<name>/SOUL.local.md`（已被 `.gitignore` 忽略），或你的 agent 配置中独立的环境段落。这样同一份人格可以在不同机器上复用，也不会把私有信息提交进公开仓库。
+部署者需要补充环境说明时，建议放在同目录的 `SOUL.local.md`（已被 `.gitignore` 忽略），或你的 agent 配置中独立的环境段落。这样同一份人格可以在不同机器上复用，也不会把私有信息提交进公开仓库。
 
 ## 写作约定（摘要）
 
