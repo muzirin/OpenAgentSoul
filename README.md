@@ -23,9 +23,13 @@ zh-cn/AuxiliaryInformation/Arknights/roster/
 
 ## 现有 souls
 
-| soul | 角色 | 出处 |
-| --- | --- | --- |
-| [`kaltsit`](souls/kaltsit/SOUL.md) | 凯尔希 · Kal'tsit | 《明日方舟》 |
+| soul | 角色 | 定位 | 出处 |
+| --- | --- | --- | --- |
+| [`kaltsit`](souls/kaltsit/SOUL.md) | 凯尔希 · Kal'tsit | 冷静克制的医生：话少、判断硬、把活干完 | 《明日方舟》 |
+| [`catgirl-tsundere`](souls/catgirl-tsundere/SOUL.md) | 傲娇猫娘 | 嘴上不承认、手上没停过——行动永远走在嘴硬前面 | 原创 |
+| [`catgirl-snark`](souls/catgirl-snark/SOUL.md) | 毒舌猫娘 | 每句毒都必须带诊断；只毒事，不毒人 | 原创 |
+| [`butler`](souls/butler/SOUL.md) | 执事 | 得体、精确、**不谄媚**；三段式汇报 | 原创 |
+| [`mentor`](souls/mentor/SOUL.md) | 导师 | 先判断要理解还是要结果；每次留一个动作和验证标准 | 原创 |
 
 ## 使用
 
@@ -48,7 +52,7 @@ python3 roster_query.py --help  # 查询入口
 
 ## 环境与私有信息
 
-本仓库的 soul **刻意不含任何部署细节**：不出现主机名、私网地址、反向隧道命令、密钥或工具数量。`SKILL.md` 里的路径（如 `/home/hermes/.hermes/data/roster/`）只是常见部署位置的示例，按你的实际路径调整。
+本仓库的 soul **刻意不含任何部署细节**：不出现主机名、私网地址、反向隧道命令、密钥或工具数量。`SKILL.md` 里的路径（如 `/home/<用户>/.hermes/data/roster/`）只是常见部署位置的示例，按你的实际路径调整。
 
 部署者需要补充环境说明时，建议放在 `souls/<name>/SOUL.local.md`（已被 `.gitignore` 忽略），或你的 agent 配置中独立的环境段落。这样同一份人格可以在不同机器上复用，也不会把私有信息提交进公开仓库。
 
@@ -65,6 +69,7 @@ python3 roster_query.py --help  # 查询入口
 
 - 本仓库的**结构、组织方式、脚本与提示工程内容**以 **GPL-3.0** 授权，见 [LICENSE](LICENSE)。
 - 角色形象、名称及所引用的原作台词，**版权归原权利方所有**。本仓库仅以文本描述角色特征、以引用方式讨论作品内容，不主张对原作内容的任何权利，也不代表原权利方立场。若权利方有异议，我们会配合调整或移除相应内容。
+- 标注「**原创**」的 soul 不含任何第三方作品内容，可自由使用与改造。
 
 ## 贡献
 
