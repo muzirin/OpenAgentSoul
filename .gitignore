@@ -1,0 +1,22 @@
+# 部署者在本地补充的环境说明（含主机名、命令别名、通道等私有信息），不入库
+souls/*/SOUL.local.md
+*.local.md
+local/
+
+# 派生缓存（可由 operators.json 重建），不入库
+zh-cn/**/operators_cache.json
+zh-cn/**/*.db-wal
+zh-cn/**/*.db-shm
+
+# 编辑器 / 系统
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 临时文件
+*.tmp
+*.bak
